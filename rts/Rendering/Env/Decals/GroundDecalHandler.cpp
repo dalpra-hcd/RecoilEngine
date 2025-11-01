@@ -261,7 +261,7 @@ void CGroundDecalHandler::AddTexturesFromTable()
 	for (int i = 1; i <= scarTblSize; ++i) {
 		const std::string mainTexFileName = scarsTable.GetString(i, "");
 
-		if (mainTexFileName.find("_normal") != std::string::npos)
+		if (mainTexFileName.find("_normal") == std::string::npos)
 			continue;
 
 		const std::string normTexFileName = mainTexFileName.empty() ? "" : GetExtraTextureName(mainTexFileName);
@@ -298,6 +298,8 @@ void CGroundDecalHandler::AddTexturesFromTable()
 
 				AddTexToAtlas(mainName, mainTexFileName,  true);
 				AddTexToAtlas(normName, normTexFileName, false);
+
+				maxUniqueScars = atlasTex->GetAllocator()->contains(mainName);
 			}
 		}
 	}
