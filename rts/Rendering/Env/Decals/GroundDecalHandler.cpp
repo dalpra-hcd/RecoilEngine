@@ -273,31 +273,32 @@ void CGroundDecalHandler::AddTexturesFromTable()
 
 		// check if loaded for real
 		// can't use atlas->TextureExists() as it's only populated after Finalize()
-		maxUniqueScars += atlasTex->GetAllocator()->contains(mainName);
+		if (atlasTex->GetAllocator()->contains(mainName)) {
+			maxUniqueScars++
+		} else {
+			LOG_L(L_WARNING, "Failed to load decal %s", mainName);
+		}
 	}
 
-	if (maxUniqueScars == scarTblSize)
-		return;
+	if (maxUniqueScars < scarTblSize) {
+		// fill the gaps in case the loop above failed to load some of the scar textures
+		const std::vector<std::string> scarMainTextures = CFileHandler::FindFiles("bitmaps/scars/", "scar?.*");
+		const size_t scarsExtraNum = scarMainTextures.size();
 
-	// fill the gaps in case the loop above failed to load some of the scar textures
-	const std::vector<std::string> scarMainTextures = CFileHandler::FindFiles("bitmaps/scars/", "scar?.*");
-	const size_t scarsExtraNum = scarMainTextures.size();
+		if (scarsExtraNum > 0) {
+			for (int extraTexNum = 0, i = 1; scarTblSize - maxUniqueScars > 0 && i <= scarTblSize; ++i) {
+				const auto mainName = IntToString(i, "mainscar_%i");
+				if (atlasTex->GetAllocator()->contains(mainName))
+					continue;
 
-	if (scarsExtraNum > 0) {
-		for (int extraTexNum = 0, i = 1; scarTblSize - maxUniqueScars > 0 && i <= scarTblSize; ++i) {
-			const auto mainName = IntToString(i, "mainscar_%i");
-			if (atlasTex->GetAllocator()->contains(mainName))
-				continue;
+				const auto normName = IntToString(i, "normscar_%i");
 
-			const auto normName = IntToString(i, "normscar_%i");
+				const std::string mainTexFileName = scarMainTextures[extraTexNum++ % scarsExtraNum];
+				const std::string normTexFileName = GetExtraTextureName(mainTexFileName);
 
-			const std::string mainTexFileName = scarMainTextures[extraTexNum++ % scarsExtraNum];
-			const std::string normTexFileName = GetExtraTextureName(mainTexFileName);
-
-			AddTexToAtlas(mainName, mainTexFileName,  true);
-			AddTexToAtlas(normName, normTexFileName, false);
-
-			maxUniqueScars += atlasTex->GetAllocator()->contains(mainName);
+				AddTexToAtlas(mainName, mainTexFileName,  true);
+				AddTexToAtlas(normName, normTexFileName, false);
+			}
 		}
 	}
 
