@@ -274,7 +274,7 @@ void CGroundDecalHandler::AddTexturesFromTable()
 		// check if loaded for real
 		// can't use atlas->TextureExists() as it's only populated after Finalize()
 		if (atlasTex->GetAllocator()->contains(mainName)) {
-			maxUniqueScars++
+			maxUniqueScars++;
 		} else {
 			LOG_L(L_WARNING, "Failed to load decal %s", mainTexFileName.c_str());
 		}
