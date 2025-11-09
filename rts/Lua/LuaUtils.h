@@ -35,6 +35,7 @@
 
 struct SolidObjectDef;
 struct SCommandDescription;
+struct SResourcePack;
 static constexpr int LUA_TABLE_VALUE_INDEX = -1;
 static constexpr int LUA_TABLE_KEY_INDEX = -2;
 
@@ -170,6 +171,8 @@ class LuaUtils {
 		                             vector<string>& vec);
 		static int ParseFloat4Vector(lua_State* L, int tableIndex,
 		                            vector<float4>& vec);
+
+		static bool ParseResourcePack(lua_State* L, int index, SResourcePack& pack);
 
 		static void PushStringVector(lua_State* L, const vector<string>& vec);
 
