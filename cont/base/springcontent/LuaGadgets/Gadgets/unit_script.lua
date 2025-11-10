@@ -320,7 +320,7 @@ end
 -- Helper for WaitForMove and WaitForTurn
 -- Unsafe, because it does not check whether the animation to wait for actually exists.
 local function WaitForAnim(threads, waitingForAnim, piece, axis)
-	local index = if axis != nil then piece * 3 + axis else piece end
+	local index = axis and (piece * 3 + axis) or piece
 	local wthreads = waitingForAnim[index]
 	if (not wthreads) then
 		wthreads = {}
