@@ -1616,7 +1616,6 @@ int CLuaUnitScript::IsInSpin(lua_State* L)
 int CLuaUnitScript::IsInScale(lua_State* L)
 {
 	RECOIL_DETAILED_TRACY_ZONE;
-	RECOIL_DETAILED_TRACY_ZONE;
 	if (activeScript == nullptr)
 		return 0;
 
