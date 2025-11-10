@@ -216,7 +216,7 @@ Spring.UnitScript.WaitForMove(number piece, number axis) -> boolean
 
 Spring.UnitScript.WaitForScale(number piece) -> boolean
 	Returns true iff such an animation exists, false otherwise.  Iff it returns
-	true, the ScaleFinished callIn will be called once the move completes.
+	true, the ScaleFinished callIn will be called once the scale completes.
 
 Spring.UnitScript.SetDeathScriptFinished(number wreckLevel])
 	Tells Spring the Killed script finished, and which wreckLevel to use.
