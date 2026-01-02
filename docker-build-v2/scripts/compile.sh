@@ -2,7 +2,7 @@
 
 set -e
 
-cmake --build /build/out
+cmake --build /build/out "$@"
 cmake --install /build/out
 
 # Manually remove the lib, include and share directories coming

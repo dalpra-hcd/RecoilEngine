@@ -58,7 +58,7 @@ After installing requirements, you can execute the build locally using the `buil
 $ docker-build-v2/build.sh --help
 Usage: docker-build-v2/build.sh [--help] [--configure|--compile] [-j|--jobs {number_of_jobs}] {windows|linux} [cmake_flag...]
 Options:
-  --help       print this help message
+  -h, --help   print this help message
   --configure  only configure, don't compile
   --compile    only compile, don't configure
   -j, --jobs   number of concurrent processes to use when building
