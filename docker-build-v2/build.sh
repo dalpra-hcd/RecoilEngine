@@ -144,7 +144,11 @@ echo "$@"
 cd /build/src/docker-build-v2/scripts
 $CONFIGURE && ./configure.sh "$@"
 if $COMPILE; then
-  ./compile.sh "$@"
+  if $CONFIGURE; then
+    ./compile.sh
+  else
+    ./compile.sh "$@"
+  fi
   # When compiling for windows, we must strip debug info because windows does
   # not handle the output binary size...
   if [[ $ENGINE_PLATFORM =~ .*windows ]]; then

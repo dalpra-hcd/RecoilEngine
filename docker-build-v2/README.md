@@ -107,6 +107,18 @@ To list all cmake options and their values run:
 docker-build-v2/build.sh --configure linux -LH
 ```
 
+When the configuration phase is not selected the arguments are passed to
+the compilation phase, so it can run custom targets (with options).
+
+For example, to compile the unit tests with verbose output run:
+
+```shell
+docker-build-v2/build.sh --compile linux -t tests --verbose
+```
+
+In the case both configuration and compilation phase are selected, the
+configuration phase takes precedent over the arguments.
+
 ### Custom Docker image
 
 The official images are built as part of a CI workflow (see [Implementation Overview](#implementation-overview)), but if you want to adjust the Docker build image or test local changes, you can build it locally:
