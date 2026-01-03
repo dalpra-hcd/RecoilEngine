@@ -274,6 +274,7 @@ bool LuaSyncedCtrl::PushEntries(lua_State* L)
 	REGISTER_LUA_CFUNC(SetFeatureCollisionVolumeData);
 	REGISTER_LUA_CFUNC(SetFeaturePieceCollisionVolumeData);
 	REGISTER_LUA_CFUNC(SetFeaturePieceVisible);
+	REGISTER_LUA_CFUNC(SetFeaturePieceMatrix);
 
 	REGISTER_LUA_CFUNC(SetFeatureFireTime);
 	REGISTER_LUA_CFUNC(SetFeatureSmokeTime);
@@ -5338,6 +5339,41 @@ int LuaSyncedCtrl::SetFeaturePieceCollisionVolumeData(lua_State* L)
 int LuaSyncedCtrl::SetFeaturePieceVisible(lua_State* L)
 {
 	return (SetSolidObjectPieceVisible(L, ParseFeature(L, __func__, 1)));
+}
+
+/*** Sets the local (i.e. parent-relative) matrix of the given piece, for a feature.
+ *
+ * @function Spring.SetFeaturePieceMatrix
+ *
+ * If any of the first three elements are non-zero, and also blocks all script animations from modifying it until {0, 0, 0} is passed.
+ *
+ * @param featureID integer
+ * @param pieceIndex number
+ * @param matrix number[] an array of 16 floats
+ * @return nil
+ */
+int LuaSyncedCtrl::SetFeaturePieceMatrix(lua_State* L)
+{
+	CFeature* feature = ParseFeature(L, __func__, 1);
+
+	if (feature == nullptr)
+		return 0;
+
+	LocalModelPiece* lmp = ParseObjectLocalModelPiece(L, feature, 2);
+
+	if (lmp == nullptr)
+		return 0;
+
+	CMatrix44f mat;
+
+	if (LuaUtils::ParseFloatArray(L, 3, &mat.m[0], 16) == -1)
+		return 0;
+
+	if (lmp->SetPieceSpaceMatrix(mat))
+		lmp->SetDirty();
+
+	lua_pushboolean(L, lmp->blockScriptAnims);
+	return 1;
 }
 
 
